@@ -23,22 +23,26 @@ def player(board):
     Returns player who has the next turn on a board.
     """
     turns = 0
-    for slot in board:
-        if slot is not None:
-            turns += 1
-    while turns > 0:
-        if turns % 2 == 0:
-            return O
-        else:
-            return X
-    return X
+    for row in board:
+        for i in range(len(row)):
+            if row[i] is not None:
+                turns += 1
+    if turns % 2 == 0 and turns > 0:
+        return O
+    else:
+        return X
 
 
 def actions(board):
     """
     Returns set of all possible actions (i, j) available on the board.
     """
-    raise NotImplementedError
+    actions = []
+    for i, row in enumerate(board):
+        for j in range(len(row)):
+            if row[j] is None:
+                actions.append((i,j))
+    return actions
 
 
 def result(board, action):
