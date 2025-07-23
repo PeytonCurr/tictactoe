@@ -8,7 +8,7 @@ def initial_state():
     Returns starting state of the board.
     """
     return [[EMPTY, EMPTY, EMPTY],
-            [EMPTY, EMPTY, EMPTY],
+            [EMPTY, X, EMPTY],
             [EMPTY, EMPTY, EMPTY]]
 
 
@@ -29,4 +29,18 @@ def player(board):
         return O
     
 
+def actions(board):
+    """
+    Returns set of all possible actions (i, j) available on the board.
+    """
+    actions = []
+    for i, row in enumerate(board):
+        for j in range(len(row)):
+            if row[j] == None:
+                actions.append((i,j))
+    print(actions)
+    return actions
+
+
 player(initial_state())
+actions(initial_state())
