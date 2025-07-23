@@ -103,4 +103,18 @@ def minimax(board):
     """
     Returns the optimal action for the current player on the board.
     """
-    raise NotImplementedError
+    if terminal(board) == True:
+        return None
+    
+    player = player(board)
+    actions = actions(board)
+    results = {}
+
+    for action in actions:
+        resultBoard = result(action)
+        if minimax(resultBoard) == None:
+            results[utility(winner(resultBoard))] = action
+    if player == X:
+        return max(results)
+    else:
+        return min(results) 
