@@ -1,3 +1,5 @@
+import copy
+
 X = "X"
 O = "O"
 EMPTY = None
@@ -7,7 +9,7 @@ def initial_state():
     """
     Returns starting state of the board.
     """
-    return [[EMPTY, EMPTY, EMPTY],
+    return [[O, EMPTY, EMPTY],
             [EMPTY, X, EMPTY],
             [EMPTY, EMPTY, EMPTY]]
 
@@ -41,6 +43,19 @@ def actions(board):
     print(actions)
     return actions
 
+def result(board, action):
+    """
+    Returns the board that results from making move (i, j) on the board.
+    """
+    newBoard = copy.deepcopy(board)
+    if board[action[0]][action[1]] == None:
+        newBoard[action[0]][action[1]] = player(board)
+        print(newBoard)
+        return newBoard
+    else:
+        raise Exception("This Action Can't be taken")
+
 
 player(initial_state())
-actions(initial_state())
+actions = actions(initial_state())
+result(initial_state(), actions[0])
