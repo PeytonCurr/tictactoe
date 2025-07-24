@@ -9,9 +9,9 @@ def initial_state():
     """
     Returns starting state of the board.
     """
-    return [[O, X, X],
-            [O, X, EMPTY],
-            [O, EMPTY, EMPTY]]
+    return [[O, X, O],
+            [O, X, X],
+            [X, O, O]]
 
 
 def player(board):
@@ -73,9 +73,23 @@ def winner(board):
     print("None")
     return None
 
+def terminal(board):
+    """
+    Returns True if game is over, False otherwise.
+    """
+    
+    if winner(board) == None:
+        for row in board:
+            for i in range(len(row)):
+                if row[i] == None:
+                    print("False")
+                    return False
+    print("True")
+    return True
 
 
 player(initial_state())
-actions = actions(initial_state())
-result(initial_state(), actions[0])
+# actions = actions(initial_state())
+# result(initial_state(), actions[0])
 winner(initial_state())
+terminal(initial_state())
