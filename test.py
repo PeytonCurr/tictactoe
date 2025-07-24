@@ -10,8 +10,8 @@ def initial_state():
     Returns starting state of the board.
     """
     return [[O, X, X],
-            [O, X, X],
-            [O, O, O]]
+            [X, O, X],
+            [O, O, EMPTY]]
 
 
 def player(board):
@@ -100,11 +100,36 @@ def utility(board):
     else:
         print(0)
         return 0
+    
+
+def minimax(board):
+    """
+    Returns the optimal action for the current player on the board.
+    """
+    if terminal(board) == True:
+        print("None")
+        return None
+    
+    play = player(board)
+    actionList = actions(board)
+    results = [()]
+
+    for action in actionList:
+        resultBoard = result(board, action)
+        if minimax(resultBoard) == None and winner(resultBoard) is not None:
+            results.append(([utility(winner(resultBoard))], action))
+    if play == X:
+        print(max(results))
+        return max(results)
+    else:
+        print(min(results))
+        return min(results) 
 
 
 # player(initial_state())
 # actions = actions(initial_state())
 # result(initial_state(), actions[0])
-winner(initial_state())
-terminal(initial_state())
-utility(initial_state())
+# winner(initial_state())
+# terminal(initial_state())
+# utility(initial_state())
+minimax(initial_state())
