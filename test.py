@@ -9,9 +9,9 @@ def initial_state():
     """
     Returns starting state of the board.
     """
-    return [[O, EMPTY, EMPTY],
-            [EMPTY, X, EMPTY],
-            [EMPTY, EMPTY, EMPTY]]
+    return [[O, X, X],
+            [O, X, EMPTY],
+            [O, EMPTY, EMPTY]]
 
 
 def player(board):
@@ -55,7 +55,27 @@ def result(board, action):
     else:
         raise Exception("This Action Can't be taken")
 
+def winner(board):
+    """
+    Returns the winner of the game, if there is one.
+    """
+    for i in range(3):
+        if board[i][0] == board[i][1] and board[i][1] == board[i][2] and board[i][0] != None:
+            print(board[i][0])
+            return board[i][0]
+        if board[0][i] == board[1][i] and board[1][i] == board[2][i] and board[0][i] != None:
+            print(board[0][i])
+            return board[0][i]
+        if board[0][0] == board[1][1] and board[1][1] == board[2][2] or board[0][2] == board[1][1] and board[1][1] == board[2][0] and board[1][1] != None:
+            print(board[1][1])
+            return board[1][1]
+        
+    print("None")
+    return None
+
+
 
 player(initial_state())
 actions = actions(initial_state())
 result(initial_state(), actions[0])
+winner(initial_state())
