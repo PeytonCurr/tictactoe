@@ -10,9 +10,9 @@ def initial_state():
     """
     Returns starting state of the board.
     """
-    return [[O, EMPTY, X],
-            [X, EMPTY, X],
-            [EMPTY, O, O]]
+    return [[EMPTY, X, O],
+            [EMPTY, X, O],
+            [EMPTY, EMPTY, X]]
 
 
 def player(board):
@@ -103,53 +103,48 @@ def utility(board):
         return 0
     
 
+
+def max_value(board):
+    if terminal(board):
+        return utility(board)
+    v = -math.inf
+    for action in actions(board):
+        v = max(v, min_value(result(board, action)))
+    return v
+
+def min_value(board):
+    if terminal(board):
+        return utility(board)
+    v = math.inf
+    for action in actions(board):
+        v = min(v, max_value(result(board, action)))
+    return v
+
 def minimax(board):
     """
     Returns the optimal action for the current player on the board.
     """
-    
-    def maxValue(board):
-        v = -math.inf
-        if terminal(board):
-            return utility(board)
-        for a in actions(board):
-            v = max(v, minValue(result(board, a)))
-            return v
-        
 
-    def minValue(board):
-        v = math.inf
-        if terminal(board):
-            return utility (board)
-        for a in actions(board):
-            v = min(v, maxValue(result(board, a)))
-            return v
-        
-
-    if terminal(board) == True:
+    if terminal(board):
         print("Returning None - Minimax")
         return None
-    
-    play = player(board)
-    actionList = actions(board)
-    actionValues = []
-
-    for action in actionList:
-        if play == X:
-            actionValues.append((minValue(result(board, action)), action))
-        else:
-            actionValues.append((maxValue(result(board, action)), action))
-        
-    if play == X:
-        print(f"{actionValues} - Minimax")
-        res = max(actionValues)
-        print(f"{res} - Minimax")
-        return max(res[1])
     else:
-        print(f"{actionValues} - Minimax")
-        res = min(actionValues)
-        print(f"{res} - Minimax")
-        return min(res[1]) 
+        if player(board) == X:
+            v = -math.inf
+            for action in actions(board):
+                k = min_value(result(board, action))
+                if k > v:
+                    v = k
+                    best_move = action
+        else:
+            v = math.inf
+            for action in actions(board):
+                k = max_value(result(board, action))
+                if k < v:
+                    v = k
+                    best_move = action
+        print(best_move)
+        return best_move
 
 
 # player(initial_state())

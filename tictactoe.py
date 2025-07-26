@@ -28,10 +28,14 @@ def player(board):
         for i in range(len(row)):
             if row[i] != None:
                 turns += 1
-    if turns % 2 == 0 and turns > 0:
-        return O
-    else:
+    if turns == 0:
         return X
+    elif turns == 1:
+        return O
+    elif turns % 2 == 0:
+        return X
+    else:
+        return O
 
 
 def actions(board):
@@ -99,45 +103,43 @@ def utility(board):
         return 0
 
 
+def max_value(board):
+    if terminal(board):
+        return utility(board)
+    v = -math.inf
+    for action in actions(board):
+        v = max(v, min_value(result(board, action)))
+    return v
+
+def min_value(board):
+    if terminal(board):
+        return utility(board)
+    v = math.inf
+    for action in actions(board):
+        v = min(v, max_value(result(board, action)))
+    return v
+
 def minimax(board):
     """
     Returns the optimal action for the current player on the board.
     """
-    
-    def maxValue(board):
-        v = -math.inf
-        if terminal(board):
-            return utility(board)
-        for a in actions(board):
-            v = max(v, minValue(result(board, a)))
-            return v
-        
 
-    def minValue(board):
-        v = math.inf
-        if terminal(board):
-            return utility (board)
-        for a in actions(board):
-            v = min(v, maxValue(result(board, a)))
-            return v
-        
-
-    if terminal(board) == True:
+    if terminal(board):
+        print("Returning None - Minimax")
         return None
-    
-    play = player(board)
-    actionList = actions(board)
-    actionValues = []
-
-    for action in actionList:
-        if play == X:
-            actionValues.append((minValue(result(board, action)), action))
-        else:
-            actionValues.append((maxValue(result(board, action)), action))
-        
-    if play == X:
-        res = max(actionValues)
-        return max(res[1])
     else:
-        res = min(actionValues)
-        return min(res[1]) 
+        if player(board) == X:
+            v = -math.inf
+            for action in actions(board):
+                k = min_value(result(board, action))
+                if k > v:
+                    v = k
+                    best_move = action
+        else:
+            v = math.inf
+            for action in actions(board):
+                k = max_value(result(board, action))
+                if k < v:
+                    v = k
+                    best_move = action
+        return best_move
